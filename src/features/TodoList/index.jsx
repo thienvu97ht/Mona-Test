@@ -1,7 +1,7 @@
 import { Container, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import { addItem, removeItem, removeTodo } from "app/todoSlice";
+import { addItem, removeItem, removeTodo, updateItem } from "app/todoSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CardItem from "./components/CardItem";
@@ -34,6 +34,11 @@ function TodoListFeature(props) {
     dispatch(action);
   };
 
+  const handleUpdateItem = (values) => {
+    const action = updateItem(values);
+    dispatch(action);
+  };
+
   return (
     <Box className={classes.root}>
       <Container>
@@ -45,6 +50,7 @@ function TodoListFeature(props) {
                 onRemoveTodo={handleRemoveTodo}
                 onAddItem={handleAddTodo}
                 onRemoveItem={handleRemoveItem}
+                onUpdateItem={handleUpdateItem}
               />
             </Grid>
           ))}

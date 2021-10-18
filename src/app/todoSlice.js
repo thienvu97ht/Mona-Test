@@ -12,12 +12,12 @@ const todoSlide = createSlice({
         openItems: [
           {
             id: 1,
-            status: 1,
+            status: true,
             itemName: "Interstellar",
           },
           {
             id: 2,
-            status: 0,
+            status: false,
             itemName: "End Game",
           },
         ],
@@ -28,12 +28,12 @@ const todoSlide = createSlice({
         openItems: [
           {
             id: 1,
-            status: 1,
+            status: true,
             itemName: "Interstellar",
           },
           {
             id: 2,
-            status: 0,
+            status: false,
             itemName: "End Game",
           },
         ],
@@ -58,7 +58,7 @@ const todoSlide = createSlice({
 
       const newItem = {
         id: uniqid(),
-        status: 0,
+        status: false,
         itemName: action.payload.itemName,
       };
       state.todoList[index].openItems.push(newItem);
@@ -76,7 +76,18 @@ const todoSlide = createSlice({
       state.todoList[indexTodo].openItems.splice(indexItem, 1);
     },
 
-    updateItem(state, action) {},
+    updateItem(state, action) {
+      const indexTodo = state.todoList.findIndex(
+        (x) => x.id === action.payload.idTodo
+      );
+
+      const indexItem = state.todoList[indexTodo].openItems.findIndex(
+        (x) => x.id === action.payload.idItem
+      );
+
+      state.todoList[indexTodo].openItems[indexItem].status =
+        !state.todoList[indexTodo].openItems[indexItem].status;
+    },
   },
 });
 

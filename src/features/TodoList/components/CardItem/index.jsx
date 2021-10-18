@@ -12,6 +12,7 @@ CardItem.propTypes = {
   onRemoveTodo: PropTypes.func,
   onAddItem: PropTypes.func,
   onRemoveItem: PropTypes.func,
+  onUpdateItem: PropTypes.func,
 };
 
 const useStyles = makeStyles({
@@ -40,7 +41,13 @@ const useStyles = makeStyles({
   },
 });
 
-function CardItem({ todo, onRemoveTodo, onAddItem, onRemoveItem }) {
+function CardItem({
+  todo,
+  onRemoveTodo,
+  onAddItem,
+  onRemoveItem,
+  onUpdateItem,
+}) {
   const classes = useStyles();
   const [isNewTodo, setIsNewTodo] = useState(false);
 
@@ -71,6 +78,17 @@ function CardItem({ todo, onRemoveTodo, onAddItem, onRemoveItem }) {
     }
   };
 
+  const handeleUpdateItem = (values) => {
+    const data = {
+      idTodo: todo.id,
+      idItem: values,
+    };
+
+    if (onRemoveItem) {
+      onUpdateItem(data);
+    }
+  };
+
   return (
     <Box className={classes.root}>
       <Box className={classes.header}>
@@ -91,6 +109,7 @@ function CardItem({ todo, onRemoveTodo, onAddItem, onRemoveItem }) {
             key={item.id}
             todoItem={item}
             onRemoveItem={handeleRemoveItem}
+            onUpdateItem={handeleUpdateItem}
           />
         ))}
       </Box>

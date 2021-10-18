@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import { Checkbox, IconButton, Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import { makeStyles } from "@mui/styles";
 TodoItem.propTypes = {
   todoItem: PropTypes.object,
   onRemoveItem: PropTypes.func,
+  onUpdateItem: PropTypes.func,
 };
 
 const useStyles = makeStyles({
@@ -29,16 +30,17 @@ const useStyles = makeStyles({
   },
 });
 
-function TodoItem({ todoItem, onRemoveItem }) {
+function TodoItem({ todoItem, onRemoveItem, onUpdateItem }) {
   const classes = useStyles();
-
-  const isChecked = !!todoItem.status;
 
   return (
     <Box className={classes.root}>
       <Box>
-        <Checkbox checked={isChecked} />
-        {isChecked ? (
+        <Checkbox
+          checked={todoItem.status}
+          onChange={() => onUpdateItem(todoItem.id)}
+        />
+        {todoItem.status ? (
           <Typography className={classes.isChecked}>
             {todoItem.itemName}
           </Typography>
