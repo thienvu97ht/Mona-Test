@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import NewItemForm from "../NewItemForm";
+import RenameForm from "../RenameForm";
 import TodoItem from "../TodoItem";
 
 CardItem.propTypes = {
@@ -13,6 +14,7 @@ CardItem.propTypes = {
   onAddItem: PropTypes.func,
   onRemoveItem: PropTypes.func,
   onUpdateItem: PropTypes.func,
+  onRename: PropTypes.func,
 };
 
 const useStyles = makeStyles({
@@ -47,9 +49,11 @@ function CardItem({
   onAddItem,
   onRemoveItem,
   onUpdateItem,
+  onRename,
 }) {
   const classes = useStyles();
   const [isNewTodo, setIsNewTodo] = useState(false);
+  const [isRenameForm, SetIsRenameForm] = useState(false);
 
   const handleOpenAddForm = () => {
     setIsNewTodo(true);
@@ -84,26 +88,57 @@ function CardItem({
       idItem: values,
     };
 
-    if (onRemoveItem) {
+    if (onUpdateItem) {
       onUpdateItem(data);
+    }
+  };
+
+  const openRenameForm = () => {
+    SetIsRenameForm(true);
+  };
+
+  const handleRename = (values) => {
+    SetIsRenameForm(false);
+
+    const data = {
+      idTodo: todo.id,
+      nameTodo: values.name,
+    };
+
+    if (onRename) {
+      onRename(data);
+    }
+  };
+
+  const handleKeyEvent = (key) => {
+    if (key === "Escape") {
+      setIsNewTodo(false);
     }
   };
 
   return (
     <Box className={classes.root}>
-      <Box className={classes.header}>
-        <Typography>{todo.name}</Typography>
-        <Box className={classes.button}>
-          <IconButton title="Add" onClick={handleOpenAddForm}>
-            <AddBox />
-          </IconButton>
-          <IconButton title="Delete" onClick={() => onRemoveTodo(todo.id)}>
-            <DeleteForever />
-          </IconButton>
-        </Box>
+      <Box className={classes.header} onDoubleClick={openRenameForm}>
+        {isRenameForm ? (
+          <RenameForm todoName={todo.name} onSubmit={handleRename} />
+        ) : (
+          <>
+            <Typography>{todo.name}</Typography>
+            <Box className={classes.button}>
+              <IconButton title="Add" onClick={handleOpenAddForm}>
+                <AddBox />
+              </IconButton>
+              <IconButton title="Delete" onClick={() => onRemoveTodo(todo.id)}>
+                <DeleteForever />
+              </IconButton>
+            </Box>
+          </>
+        )}
       </Box>
       <Box className={classes.body}>
-        {isNewTodo && <NewItemForm onSubmit={handleOnSubmit} />}
+        {isNewTodo && (
+          <NewItemForm onSubmit={handleOnSubmit} keyEvent={handleKeyEvent} />
+        )}
         {todo?.openItems?.map((item) => (
           <TodoItem
             key={item.id}

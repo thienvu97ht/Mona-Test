@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
+import { makeStyles } from "@mui/styles";
 
 InputField.propTypes = {
   form: PropTypes.object.isRequired,
@@ -9,12 +10,47 @@ InputField.propTypes = {
 
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  white: PropTypes.bool,
   disable: PropTypes.bool,
 };
 
+const useStyles = makeStyles({
+  white: {
+    "& input": {
+      color: "white",
+    },
+
+    "& label.Mui-focused, & label": {
+      color: "white",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "white",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "white",
+      },
+      "&:hover fieldset": {
+        borderColor: "white",
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "white",
+      },
+    },
+  },
+
+  null: {},
+});
+
 function InputField(props) {
-  const { form, name, label, disable } = props;
+  const { form, name, label, disable, white, keyEvent } = props;
   const { control } = form;
+  const classes = useStyles();
+  const keyboardEvents = (e) => {
+    if (keyEvent) {
+      keyEvent(e.key);
+    }
+  };
 
   return (
     <Controller
@@ -36,6 +72,9 @@ function InputField(props) {
           name={name}
           value={value}
           disabled={disable}
+          size="small"
+          className={white ? classes.white : classes.null}
+          onKeyDown={keyboardEvents}
         />
       )}></Controller>
   );

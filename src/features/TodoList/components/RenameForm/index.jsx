@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
+import { Save } from "@mui/icons-material";
+import { Box, IconButton } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import InputField from "components/form-controls/InputField";
 import PropTypes from "prop-types";
@@ -8,36 +8,39 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-NewTodoForm.propTypes = {
+RenameForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
 const useStyles = makeStyles({
-  root: {},
+  root: {
+    width: "100%",
 
-  form: {
-    display: "flex",
+    "& > form": {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "15px 10px 10px 15px",
 
-    "& > div": {
-      margin: 0,
-    },
-
-    "& > button": {
-      marginLeft: "10px",
+      "& > div": {
+        flex: 1,
+        margin: 0,
+      },
     },
   },
 });
 
-function NewTodoForm(props) {
+function RenameForm(props) {
   const classes = useStyles();
+  const { todoName } = props;
 
   const schema = yup.object().shape({
-    todo: yup.string().required("Không được để trống!"),
+    name: yup.string().required("Không được để trống!"),
   });
 
   const form = useForm({
     defaultValues: {
-      todo: "",
+      name: todoName,
     },
     reValidateMode: "onSubmit",
     resolver: yupResolver(schema),
@@ -54,14 +57,14 @@ function NewTodoForm(props) {
   return (
     <Box className={classes.root}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className={classes.form}>
-        <InputField name="todo" label="New To-do List" form={form} />
+        <InputField name="name" label="New Name" form={form} white={true} />
 
-        <Button type="submit" variant="outlined" size="large">
-          CREATE
-        </Button>
+        <IconButton type="submit">
+          <Save />
+        </IconButton>
       </form>
     </Box>
   );
 }
 
-export default NewTodoForm;
+export default RenameForm;

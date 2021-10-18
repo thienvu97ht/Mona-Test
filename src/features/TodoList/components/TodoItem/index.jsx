@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Box from "@mui/material/Box";
-import { Checkbox, IconButton, Typography } from "@mui/material";
 import { HighlightOff } from "@mui/icons-material";
+import { Checkbox, IconButton, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
+import PropTypes from "prop-types";
+import React from "react";
 
 TodoItem.propTypes = {
   todoItem: PropTypes.object,

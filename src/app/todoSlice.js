@@ -5,40 +5,7 @@ const { createSlice } = require("@reduxjs/toolkit");
 const todoSlide = createSlice({
   name: "todo",
   initialState: {
-    todoList: [
-      {
-        id: 1,
-        name: "Movies",
-        openItems: [
-          {
-            id: 1,
-            status: true,
-            itemName: "Interstellar",
-          },
-          {
-            id: 2,
-            status: false,
-            itemName: "End Game",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Movies",
-        openItems: [
-          {
-            id: 1,
-            status: true,
-            itemName: "Interstellar",
-          },
-          {
-            id: 2,
-            status: false,
-            itemName: "End Game",
-          },
-        ],
-      },
-    ],
+    todoList: [],
   },
 
   reducers: {
@@ -88,9 +55,24 @@ const todoSlide = createSlice({
       state.todoList[indexTodo].openItems[indexItem].status =
         !state.todoList[indexTodo].openItems[indexItem].status;
     },
+
+    updateTodoName(state, action) {
+      const indexTodo = state.todoList.findIndex(
+        (x) => x.id === action.payload.idTodo
+      );
+
+      state.todoList[indexTodo].name = action.payload.nameTodo;
+    },
   },
 });
 
 const { actions, reducer } = todoSlide;
-export const { addTodo, removeTodo, addItem, removeItem, updateItem } = actions;
+export const {
+  addTodo,
+  removeTodo,
+  addItem,
+  removeItem,
+  updateItem,
+  updateTodoName,
+} = actions;
 export default reducer;
