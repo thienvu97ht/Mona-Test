@@ -1,109 +1,51 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { Container, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import { makeStyles } from "@mui/styles";
-import { Container, Grid } from "@mui/material";
+import { addItem, removeItem, removeTodo } from "app/todoSlice";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CardItem from "./components/CardItem";
 
-TodoListFeature.propTypes = {};
-
 const useStyles = makeStyles({
-  root: {},
+  root: {
+    marginTop: "30px",
+    paddingBottom: "30px",
+  },
 });
 
 function TodoListFeature(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const data = [
-    {
-      id: 1,
-      name: "Movies",
-      openItems: [
-        {
-          id: 1,
-          status: 1,
-          todoName: "Interstellar",
-        },
-        {
-          id: 2,
-          status: 0,
-          todoName: "End Game",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Movies",
-      openItems: [
-        {
-          id: 1,
-          status: 1,
-          todoName: "Interstellar",
-        },
-        {
-          id: 2,
-          status: 0,
-          todoName: "End Game",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Movies",
-      openItems: [
-        {
-          id: 1,
-          status: 1,
-          todoName: "Interstellar",
-        },
-        {
-          id: 2,
-          status: 0,
-          todoName: "End Game",
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: "Movies",
-      openItems: [
-        {
-          id: 1,
-          status: 1,
-          todoName: "Interstellar",
-        },
-        {
-          id: 2,
-          status: 0,
-          todoName: "End Game",
-        },
-      ],
-    },
-    {
-      id: 5,
-      name: "Movies",
-      openItems: [
-        {
-          id: 1,
-          status: 1,
-          todoName: "Interstellar",
-        },
-        {
-          id: 2,
-          status: 0,
-          todoName: "End Game",
-        },
-      ],
-    },
-  ];
+  const todoList = useSelector((state) => state.todo.todoList);
+
+  const handleRemoveTodo = (id) => {
+    const action = removeTodo(id);
+    dispatch(action);
+  };
+
+  const handleAddTodo = (values) => {
+    const action = addItem(values);
+    dispatch(action);
+  };
+
+  const handleRemoveItem = (values) => {
+    const action = removeItem(values);
+    dispatch(action);
+  };
 
   return (
-    <Box>
+    <Box className={classes.root}>
       <Container>
         <Grid container spacing={4}>
-          {data.map((todo) => (
+          {todoList.map((todo) => (
             <Grid item key={todo.id} xs={6} sm={6} md={4} lg={4}>
-              <CardItem todo={todo} />
+              <CardItem
+                todo={todo}
+                onRemoveTodo={handleRemoveTodo}
+                onAddItem={handleAddTodo}
+                onRemoveItem={handleRemoveItem}
+              />
             </Grid>
           ))}
         </Grid>
